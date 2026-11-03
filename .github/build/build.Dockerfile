@@ -25,9 +25,12 @@ RUN ls -la /usr/src/app/redisinsight
 
 # Rebuild better-sqlite3 for Alpine (musl) since the pre-built binary was
 # compiled on Ubuntu (glibc) and is not compatible with musl libc.
+# npm is only needed for this rebuild; remove it afterwards so its bundled
+# (and vulnerable) dependencies are not part of the runtime image.
 RUN apk add --no-cache --virtual .build-deps python3 make g++ \
     && cd /usr/src/app/redisinsight/api && npm rebuild better-sqlite3 \
-    && apk del .build-deps
+    && apk del .build-deps \
+    && rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
 # folder to store local database, plugins, logs and all other files
 RUN mkdir -p /data && chown -R node:node /data \
