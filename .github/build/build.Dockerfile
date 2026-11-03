@@ -30,11 +30,10 @@ RUN apk add --no-cache --virtual .build-deps python3 make g++ \
     && apk del .build-deps
 
 # folder to store local database, plugins, logs and all other files
-RUN mkdir -p /data && chown -R node:node /data
-
-# copy the docker entry point script and make it executable
 RUN mkdir -p /data && chown -R node:node /data \
     && chgrp -R 0 /data && chmod -R g=u /data
+
+# copy the docker entry point script and make it executable
 COPY --chown=node:node ./docker-entry.sh ./
 RUN chmod 755 docker-entry.sh && chmod -R a+rX /usr/src/app
 
