@@ -1,4 +1,4 @@
-FROM node:22.22.0-alpine
+FROM node:22.23.4-alpine
 
 # runtime args and environment variables
 ARG DIST=Redis-Insight.tar.gz
@@ -14,7 +14,7 @@ ENV RI_APP_FOLDER_ABSOLUTE_PATH='/data'
 
 # this resolves CVE-2023-5363
 # TODO: remove this line once we update to base image that doesn't have this vulnerability
-RUN apk update && apk upgrade --no-cache libcrypto3 libssl3
+RUN apk update && apk upgrade --no-cache libcrypto3 libssl3 ca-certificates-bundle
 
 # set workdir
 WORKDIR /usr/src/app
