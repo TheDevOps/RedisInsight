@@ -33,8 +33,10 @@ RUN apk add --no-cache --virtual .build-deps python3 make g++ \
 RUN mkdir -p /data && chown -R node:node /data
 
 # copy the docker entry point script and make it executable
+RUN mkdir -p /data && chown -R node:node /data \
+    && chgrp -R 0 /data && chmod -R g=u /data
 COPY --chown=node:node ./docker-entry.sh ./
-RUN chmod +x docker-entry.sh
+RUN chmod 755 docker-entry.sh && chmod -R a+rX /usr/src/app
 
 # since RI is hard-code to port 5540, expose it from the container
 EXPOSE 5540
